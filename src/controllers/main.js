@@ -14,7 +14,9 @@ const mainController = {
   },
   bookDetail: async (req, res) => {
     let detailBook = await db.Book.findByPk(req.params.id,{
-      include: [{association:'authors'}]
+      include: [{association:'authors'}],
+      raw: true,
+      nest: true      
     })
     if(detailBook){
       return res.render('bookDetail',{book:detailBook})
