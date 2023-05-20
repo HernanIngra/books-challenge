@@ -1,5 +1,6 @@
 const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
+const { where } = require('sequelize');
 
 const mainController = {
   home: (req, res) => {
@@ -11,8 +12,13 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
-  bookDetail: (req, res) => {
-    // Implement look for details in the database
+  bookDetail: async (req, res) => {
+    let detailBook = await db.Book.findByPk(req.params.id,{
+      include: [{association:'authors'}]
+    })
+    if(detailBook){
+      return res.render('bookDetail',{book:detailBook})
+    }
     res.render('bookDetail');
   },
   bookSearch: (req, res) => {
