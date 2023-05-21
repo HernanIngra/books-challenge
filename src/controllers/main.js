@@ -26,7 +26,7 @@ const mainController = {
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
-  bookSearchResult: async (req, res) => {
+bookSearchResult: async (req, res) => {
     let query = await db.Book.findOne ({
       where: {
         title: req.body.title
@@ -41,8 +41,7 @@ const mainController = {
     }else{
       res.send('The book was not found.');
     }
-    // Implement search by title (estoy acá)
-    /* res.render('search'); */
+
   },
   deleteBook: (req, res) => {
     // Implement delete book
@@ -55,9 +54,21 @@ const mainController = {
       })
       .catch((error) => console.log(error));
   },
-  authorBooks: (req, res) => {
-    // Implement books by author
-    res.render('authorBooks');
+  authorBooks: async (req, res) => {
+    let authorBooks = await db.Book.findAll({
+        include: [{
+          association:'authors',
+          where: {id: req.params.id}
+        }],
+        raw: true,
+        nest: true,     
+        }         
+     ) 
+    if(authorBooks){
+      res.render('authorBooks',{books:authorBooks})
+    }else{
+      res.send('The author was not found.');
+    }
   },
   register: (req, res) => {
     res.render('register');
