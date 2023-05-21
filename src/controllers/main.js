@@ -20,15 +20,29 @@ const mainController = {
     })
     if(detailBook){
       return res.render('bookDetail',{book:detailBook})
-    }
-    res.render('bookDetail');
-  },
+    }else{
+    res.send('The book was not found.');
+  }},
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
-  bookSearchResult: (req, res) => {
-    // Implement search by title
-    res.render('search');
+  bookSearchResult: async (req, res) => {
+    let query = await db.Book.findOne ({
+      where: {
+        title: req.body.title
+      },
+        include: [{association:'authors'}],
+        raw: true,
+        nest: true          
+      
+    })
+    if(query){
+      return res.render('bookDetail',{book:query})
+    }else{
+      res.send('The book was not found.');
+    }
+    // Implement search by title (estoy acá)
+    /* res.render('search'); */
   },
   deleteBook: (req, res) => {
     // Implement delete book
