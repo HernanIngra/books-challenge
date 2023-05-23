@@ -4,11 +4,11 @@ const { where } = require('sequelize');
 
 const mainController = {
   home: (req, res) => {
-    db.Book.findAll({
+    let book = db.Book.findAll({
       include: [{ association: 'authors' }]
     })
       .then((books) => {
-        res.render('home', { books });
+        res.render('home', { books});
       })
       .catch((error) => console.log(error));
   },
@@ -94,13 +94,35 @@ bookSearchResult: async (req, res) => {
     // Implement login process
     res.render('home');
   },
-  edit: (req, res) => {
-    // Implement edit book
-    res.render('editBook', {id: req.params.id})
+  edit: async (req, res) => {
+    let bookToEdit= await db.Book.findByPk (req.params.id,{
+      include: [{association:'authors'}],
+      raw: true,
+      nest: true      
+    })
+    if(bookToEdit){
+      res.render('editBook', {book:bookToEdit})
+    }else{
+      res.send('The book was not found.');
+    }  
   },
-  processEdit: (req, res) => {
-    // Implement edit book
-    res.render('home');
+  processEdit: async (req, res) => {
+    let bookToEditP = await db.Book.findByPk(req.params.id, {
+      include: [{association: "authors"}]
+  })
+  let books = db.Book.findAll({
+    include: [{ association: 'authors' }]
+  })
+  if(bookToEditP){
+    db.Book.update({
+      title: req.body.title,
+      description: req.body.description,
+      cover: req.body.cover,
+      }, {where: {id: req.params.id}})  
+      return  res.redirect('/');   
+  }else {
+  res.send('no se encontró el libro')
+  } 
   }
 };
 
