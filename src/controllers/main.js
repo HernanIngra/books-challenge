@@ -43,9 +43,13 @@ bookSearchResult: async (req, res) => {
     }
 
   },
-  deleteBook: (req, res) => {
-    // Implement delete book
-    res.render('home');
+  deleteBook: async (req, res) => {
+    await db.Book.destroy({
+      where: {
+          id: req.params.id
+      }
+  })
+    res.redirect('/');
   },
   authors: (req, res) => {
     db.Author.findAll()
