@@ -27,7 +27,7 @@ const mainController = {
   bookSearch: (req, res) => {
     res.render('search', { books: [] });
   },
-bookSearchResult: async (req, res) => {
+  bookSearchResult: async (req, res) => {
     let query = await db.Book.findOne ({
       where: {
         title: req.body.title
@@ -125,27 +125,27 @@ bookSearchResult: async (req, res) => {
         }
     });
 }} ,
-logout: (req, res) =>{
+  logout: (req, res) =>{
   res.clearCookie('userEmail')
   req.session.destroy();
   return res.redirect('/')
-},
-profile: async (req, res) =>{
+  },
+  profile: async (req, res) =>{
   let msg = ""
   return res.render('profile',{user : req.session.userLogged,msg:msg})
-},
+  },
   edit: async (req, res) => {
     let bookToEdit= await db.Book.findByPk (req.params.id,{
       include: [{association:'authors'}],
       raw: true,
       nest: true      
-    })
+      })
     if(bookToEdit){
       res.render('editBook', {book:bookToEdit})
     }else{
       res.send('The book was not found.');
     }  
-  },
+    },
   processEdit: async (req, res) => {
     let bookToEditP = await db.Book.findByPk(req.params.id, {
       include: [{association: "authors"}]
