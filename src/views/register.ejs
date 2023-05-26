@@ -20,6 +20,7 @@
           <h1 class="text-white mb-4">Register a new user</h1>
   
           <form action="/users/register" method="POST" class="card" style="border-radius: 15px;">
+
             <div class="card-body">
   
               <div class="row align-items-center pt-4 pb-3">
@@ -30,8 +31,10 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="name" class="form-control form-control-lg" />
-  
+                  <input type="text" name="name" class="form-control form-control-lg" value = <%= locals.oldData? oldData.name : null %> >
+                  <% if(locals.errors && errors.name) { %>  
+                    <p class="alert-danger"><%= errors.name.msg %> </p>
+                  <%}%> 
                 </div>
               </div>
 
@@ -45,8 +48,10 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" />
-  
+                  <input type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" value = <%= locals.oldData? oldData.email : null %> >
+                  <% if(locals.errors && errors.email) { %>  
+                    <p class="alert-danger"><%= errors.email.msg %> </p>
+                  <%}%> 
                 </div>
               </div>
   
@@ -60,8 +65,10 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="country" class="form-control form-control-lg" placeholder="Argentina" />
-  
+                  <input type="text" name="country" class="form-control form-control-lg" placeholder="Argentina" value = <%= locals.oldData? oldData.country : null %>>
+                  <% if(locals.errors && errors.country) { %>  
+                    <p class="alert-danger"><%= errors.country.msg %> </p>
+                  <%}%> 
                 </div>
               </div>
   
@@ -76,7 +83,9 @@
                 <div class="col-md-9 pe-5">
   
                   <input type="password" name="password" class="form-control form-control-lg" >
-  
+                  <% if(locals.errors && errors.password) { %>  
+                    <p class="alert-danger"><%= errors.password.msg %> </p>
+                  <%}%> 
                 </div>
               </div>
   
@@ -90,11 +99,13 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="radio" name="category" id="admin" value="1" />
+                  <input type="radio" name="category" id="admin" value="1" <%=locals.oldData && (oldData.category == 1)? 'checked':null%> />
                   <label for="admin">Admin</label>
-                  <input type="radio" name="category" id="user" value="2" />
+                  <input type="radio" name="category" id="user" value="2" <%=locals.oldData && (oldData.category == 2)? 'checked':null%>/>
                   <label for="user">User</label>
-  
+                  <% if(locals.errors && errors.category) { %>  
+                    <p class="alert-danger"><%= errors.category.msg %> </p>
+                  <%}%> 
                 </div>
               </div>
   

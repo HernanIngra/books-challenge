@@ -3,6 +3,7 @@ const mainController = require('../controllers/main');
 const guestMiddleware = require('../middleware/guestMiddleware');
 const authMiddleware = require('../middleware/authMiddleware');
 const adminMiddleware = require('../middleware/adminMiddleware');
+const validation = require('../middleware/backValidations');
 const router = express.Router();
 
 router.get('/', mainController.home);
@@ -12,7 +13,7 @@ router.post('/books/search', mainController.bookSearchResult);
 router.get('/authors', mainController.authors);
 router.get('/authors/:id/books', mainController.authorBooks);
 router.get('/users/register', guestMiddleware,mainController.register);
-router.post('/users/register', mainController.processRegister);
+router.post('/users/register', validation, mainController.processRegister);
 router.get('/users/login',guestMiddleware, mainController.login);
 router.post('/users/login', mainController.processLogin);
 router.get('/users/profile', authMiddleware, mainController.profile);

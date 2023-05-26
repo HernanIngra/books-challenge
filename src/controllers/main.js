@@ -78,7 +78,24 @@ const mainController = {
   register: (req, res) => {
     res.render('register');
   },
-  processRegister: (req, res) => {
+  processRegister: async (req, res) => {        
+  const resultValidation = validationResult(req);   
+  let emailExisting = await db.User.findOne({ where: { email: req.body.email } });
+  
+  if (resultValidation.errors.length > 0) {
+      return res.render('register', {
+          errors: resultValidation.mapped(),
+          oldData: req.body
+      })}  else if (emailExisting){
+      return res.render('register', {
+          errors: {
+              email: {
+                  msg: 'This email is already registered'
+              },
+          },
+          oldData: req.body
+          
+      })} else {  
     db.User.create({
       Name: req.body.name,
       Email: req.body.email,
@@ -90,7 +107,7 @@ const mainController = {
         res.redirect('/users/login');
       })
       .catch((error) => console.log(error));
-  },
+  }},
   login: (req, res) => {
     res.render('login');
   },
