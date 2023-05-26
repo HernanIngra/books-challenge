@@ -5,13 +5,15 @@ const app = express();
 const methodOverride =  require('method-override');/* agregado para usar put */
 const cookies = require('cookie-parser');
 const session = require('express-session');
+const userLoggedMiddleware = require('./middleware/userLoggedMiddleware');
 
 app.use(session({
-	secret: "Shhh, It's a secret",
+	secret: "Secret secret",
 	resave: false,
 	saveUninitialized: false,
 }));
 app.use(cookies());
+app.use(userLoggedMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 

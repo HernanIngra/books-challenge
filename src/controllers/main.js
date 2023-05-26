@@ -92,7 +92,6 @@ bookSearchResult: async (req, res) => {
       .catch((error) => console.log(error));
   },
   login: (req, res) => {
-    // Implement login process
     res.render('login');
   },
   processLogin: async (req, res) => {
@@ -101,12 +100,12 @@ bookSearchResult: async (req, res) => {
     if (userToLogin) {
         let isOkThePassword = bcryptjs.compareSync(req.body.password, userToLogin.Pass);
         if (isOkThePassword) {
-            delete userToLogin.Pass;
+            userToLogin.Pass = null;
             req.session.userLogged = userToLogin;
             if (req.body.remember_user) {
-                res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 60 })
+                res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 1})
             }
-            return res.render('profile',{user : req.session.userLogged});
+            return res.redirect('/users/profile');
         }else{
             return res.render('login', {
             errors: {
@@ -126,8 +125,13 @@ bookSearchResult: async (req, res) => {
         }
     });
 }} ,
+logout: (req, res) =>{
+  res.clearCookie('userEmail')
+  req.session.destroy();
+  return res.redirect('/')
+},
 profile: async (req, res) =>{
-  res.render('profile')
+  return res.render('profile',{user : req.session.userLogged})
 },
   edit: async (req, res) => {
     let bookToEdit= await db.Book.findByPk (req.params.id,{
