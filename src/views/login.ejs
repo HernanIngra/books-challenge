@@ -31,7 +31,11 @@
                 <div class="col-md-9 pe-5">
   
                   <input type="email" name="email" class="form-control form-control-lg" placeholder="example@gmail.com" />
-  
+                  <% if (locals.errors && errors.Email) {%>
+                    <div class="alert-danger">
+                    <%=errors.Email.msg%>
+                  </div>
+                    <%}%>
                 </div>
               </div>
   
@@ -46,7 +50,11 @@
                 <div class="col-md-9 pe-5">
   
                   <input type="password" name="password" class="form-control form-control-lg" >
-  
+                  <% if (locals.errors && errors.password) {%>
+                    <div class="alert-danger">
+                    <%=errors.password.msg%>
+                  </div>
+                    <%}%>
                 </div>
               </div>
   

@@ -1,6 +1,7 @@
 const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
 const { where } = require('sequelize');
+const { validationResult } = require('express-validator')
 
 const mainController = {
   home: (req, res) => {
@@ -86,7 +87,7 @@ bookSearchResult: async (req, res) => {
       CategoryId: req.body.category
     })
       .then(() => {
-        res.redirect('/');
+        res.redirect('/users/login');
       })
       .catch((error) => console.log(error));
   },
@@ -94,10 +95,40 @@ bookSearchResult: async (req, res) => {
     // Implement login process
     res.render('login');
   },
-  processLogin: (req, res) => {
-    // Implement login process
-    res.render('home');
-  },
+  processLogin: async (req, res) => {
+    let userToLogin = await db.User.findOne({ where: { Email: req.body.email } });
+    
+    if (userToLogin) {
+        let isOkThePassword = bcryptjs.compareSync(req.body.password, userToLogin.Pass);
+        if (isOkThePassword) {
+            delete userToLogin.Pass;
+            req.session.userLogged = userToLogin;
+            if (req.body.remember_user) {
+                res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 60 })
+            }
+            return res.render('profile',{user : req.session.userLogged});
+        }else{
+            return res.render('login', {
+            errors: {
+                password: {
+                    msg: 'Contraseña incorrecta'
+                }
+              }
+
+        });
+    }} else{
+
+    return res.render('login', {
+        errors: {
+            Email: {
+                msg: 'No se encuentra el email'
+            }
+        }
+    });
+}} ,
+profile: async (req, res) =>{
+  res.render('profile')
+},
   edit: async (req, res) => {
     let bookToEdit= await db.Book.findByPk (req.params.id,{
       include: [{association:'authors'}],

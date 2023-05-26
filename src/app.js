@@ -3,7 +3,15 @@ const mainRouter = require('./routes/main');
 
 const app = express();
 const methodOverride =  require('method-override');/* agregado para usar put */
+const cookies = require('cookie-parser');
+const session = require('express-session');
 
+app.use(session({
+	secret: "Shhh, It's a secret",
+	resave: false,
+	saveUninitialized: false,
+}));
+app.use(cookies());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
