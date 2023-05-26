@@ -131,7 +131,8 @@ logout: (req, res) =>{
   return res.redirect('/')
 },
 profile: async (req, res) =>{
-  return res.render('profile',{user : req.session.userLogged})
+  let msg = ""
+  return res.render('profile',{user : req.session.userLogged,msg:msg})
 },
   edit: async (req, res) => {
     let bookToEdit= await db.Book.findByPk (req.params.id,{
