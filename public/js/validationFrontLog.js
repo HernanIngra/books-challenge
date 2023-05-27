@@ -12,7 +12,7 @@ window.addEventListener("load", function () {
         if (emailvjs.value == "") {
             errores.push("Email cannot be empty");
          } else if (!(emailvjs.value.match(validRegex))){
-            errores.push("Please write an email")
+            errores.push("This email doesn't have a valid format")
         }
              
         // password

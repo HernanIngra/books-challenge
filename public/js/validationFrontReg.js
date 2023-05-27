@@ -11,6 +11,7 @@ window.addEventListener("load", function () {
             errores.push("Name cannot be empty");
         } else if (namevjs.value.length < 3) {
             errores.push("Name must be 3 letters min")
+            console.log(namevjs.value.length);
         }
          // country
         let countryvjs = document.getElementById("country");
@@ -27,7 +28,7 @@ window.addEventListener("load", function () {
         if (emailvjs.value == "") {
             errores.push("Email cannot be empty");
          } else if (!(emailvjs.value.match(validRegex))){
-            errores.push("Please write an email")
+            errores.push("This email doesn't have a valid format")
         }
         
         // password
@@ -35,7 +36,12 @@ window.addEventListener("load", function () {
         if (passvjs.value == "") {
             errores.push("Password must be written");
         }
-
+        // category
+        let catvjsadmin  = document.getElementById("admin").checked;
+        let catvjsuser = document.getElementById('user').checked;
+        if (catvjsadmin == false && catvjsuser == false) {
+            errores.push("Category must be selected");
+        }
         
         //ul
         let ulErrores = document.getElementById("errores");

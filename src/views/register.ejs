@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="name" id="name" class="form-control form-control-lg" />
+                  <input type="text" name="name" id="name" class="form-control form-control-lg" value="<%=locals.oldData && oldData.name? oldData.name:null%>" />
                   <% if(locals.errors && errors.name) { %>  
                     <p class="alert-danger"><%= errors.name.msg %> </p>
                   <%}%>   
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="email" name="email" id="email"class="form-control form-control-lg" placeholder="example@gmail.com" />
+                  <input type="text" name="email" id="email"class="form-control form-control-lg" placeholder="example@gmail.com" value="<%=locals.oldData && oldData.email? oldData.email:null%>"  />
                   <% if(locals.errors && errors.email) { %>  
                     <p class="alert-danger"><%= errors.email.msg %> </p>
                   <%}%>   
@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="text" name="country" id="country" class="form-control form-control-lg" placeholder="Argentina" />
+                  <input type="text" name="country" id="country" class="form-control form-control-lg" placeholder="Argentina" value="<%=locals.oldData && oldData.country? oldData.country:null%>" />
                   <% if(locals.errors && errors.country) { %>  
                     <p class="alert-danger"><%= errors.country.msg %> </p>
                   <%}%>  
@@ -101,9 +101,9 @@
                 </div>
                 <div class="col-md-9 pe-5">
   
-                  <input type="radio" name="category" id="admin" value="1" <%=locals.oldData && (oldData.category == 1)? 'checked':null%> />
+                  <input type="radio" name="category" class='category'id="admin" value="1" <%=locals.oldData && (oldData.category == 1)? 'checked':null%> />
                   <label for="admin">Admin</label>
-                  <input type="radio" name="category" id="user" value="2" <%=locals.oldData && (oldData.category == 2)? 'checked':null%>/>
+                  <input type="radio" name="category" class='category' id="user" value="2" <%=locals.oldData && (oldData.category == 2)? 'checked':null%>/>
                   <label for="user">User</label>
                   <% if(locals.errors && errors.category) { %>  
                     <p class="alert-danger"><%= errors.category.msg %> </p>
